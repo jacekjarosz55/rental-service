@@ -3,12 +3,17 @@
 #include <stdlib.h>
 #include <string.h>
 
-Car *make_car_data(unsigned id, char *make, char *model, unsigned year,
+
+// global
+unsigned CAR_AUTOINCREMENT = 0;
+
+Car *make_car_data(char *make, char *model, unsigned year,
                    unsigned cost, unsigned km_driven) {
   Car *car = (Car *)malloc(sizeof(Car));
   if (car == NULL)
     return NULL;
-  car->id = id;
+  car->id = CAR_AUTOINCREMENT;
+  CAR_AUTOINCREMENT++;
   unsigned len_model = strlen(model) + 1;
   car->model = (char *)malloc(len_model);
   memcpy(car->model, model, len_model);
@@ -30,7 +35,6 @@ void free_car_data(Car *car) {
 }
 
 CarNode *add_car(CarNode **list, Car *data) {
-  printf("Adding: %s\n", data->model);
   CarNode *new = (CarNode *)malloc(sizeof(CarNode));
   if (new == NULL) {
     return NULL;
@@ -63,6 +67,14 @@ CarNode *get_car_by_id(CarNode *head, unsigned id) {
     return cur;
   }
   return NULL;
+}
+
+bool update_car(CarNode *head, unsigned int id, Car *new_data) {
+  CarNode *car = get_car_by_id(head, id);
+  if(car == NULL) return false;
+  free_car_data(car->data);
+  car->data = new_data;
+  return true;
 }
 
 void free_car(CarNode *car) {

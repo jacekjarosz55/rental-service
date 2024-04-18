@@ -15,7 +15,7 @@ struct Car {
 };
 typedef struct Car Car;
 
-Car *make_car_data(unsigned id, char *make, char *model, unsigned year, unsigned cost, unsigned km_driven);
+Car *make_car_data(char *make, char *model, unsigned year, unsigned cost, unsigned km_driven);
 void free_car_data(Car *car);
 
 
@@ -28,6 +28,9 @@ typedef struct CarNode CarNode;
 // returns pointer to added car, NULL if failed
 
 CarNode *add_car(CarNode **list, Car *data);
+
+bool update_car(CarNode *head, unsigned id, Car *new_data);
+
 CarNode *get_car_by_id(CarNode *head, unsigned id);
 
 bool remove_car_by_id(CarNode *head, unsigned id);
