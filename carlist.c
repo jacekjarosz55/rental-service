@@ -1,30 +1,27 @@
 #include "carlist.h"
+#include "util.h"
+#include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
-
-// global
-unsigned CAR_AUTOINCREMENT = 0;
-
-Car *make_car_data(char *make, char *model, unsigned year,
+unsigned _CAR_AUTO_INCREMENT = 1;
+Car *make_car_data(unsigned id, char *make, char *model, unsigned year,
                    unsigned cost, unsigned km_driven) {
   Car *car = (Car *)malloc(sizeof(Car));
   if (car == NULL)
     return NULL;
-  car->id = CAR_AUTOINCREMENT;
-  CAR_AUTOINCREMENT++;
-  unsigned len_model = strlen(model) + 1;
-  car->model = (char *)malloc(len_model);
-  memcpy(car->model, model, len_model);
-
-  unsigned len_make = strlen(make) + 1;
-  car->make = (char *)malloc(len_make);
-  memcpy(car->make, make, len_make);
-
+  if(id == 0) {
+    car->id = _CAR_AUTO_INCREMENT++;
+  } else { 
+    car->id = id;
+  }
+  car->model = copied_string(model);
+  car->make = copied_string(make);
   car->year = year;
   car->cost = cost;
   car->km_driven = km_driven;
+  car->client_id = 0;
   return car;
 }
 
@@ -58,13 +55,24 @@ CarNode *add_car(CarNode **list, Car *data) {
 CarNode *get_car_by_id(CarNode *head, unsigned id) {
   CarNode *cur = head;
   while (cur->next) {
+    if(cur->data == NULL) { continue; }
     if (cur->data->id == id) {
       return cur;
     }
     cur = cur->next;
   }
-  if (cur->data->id == id) {
+  if (cur->data && cur->data->id == id) {
     return cur;
+  }
+  return NULL;
+}
+
+CarNode *get_car_by_make_model(CarNode *head, char *make, char *model) {
+  while(head != NULL) {
+    if (strcmp(head->data->make, make) == 0 && strcmp(head->data->model, model) == 0) {
+      return head;
+    }
+    head = head->next;
   }
   return NULL;
 }
@@ -79,6 +87,7 @@ bool update_car(CarNode *head, unsigned int id, Car *new_data) {
 
 void free_car(CarNode *car) {
   free_car_data(car->data);
+  car->data = NULL;
   free(car);
 }
 
@@ -104,3 +113,13 @@ void foreach_car(CarNode *head, void (*func)(Car *)) {
     head = head->next;
   }
 }
+
+void free_car_list(CarNode *head) {
+  if(head->next) {
+    free_car_list(head->next);
+  }
+  free_car(head);
+}
+
+
+
