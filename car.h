@@ -8,7 +8,6 @@ struct Car {
   unsigned year;
   unsigned cost;
   unsigned km_driven;
-  unsigned client_id;
 };
 typedef struct Car Car;
 

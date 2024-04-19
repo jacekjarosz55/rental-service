@@ -18,7 +18,6 @@ Car *make_car_data(unsigned id, char *make, char *model, unsigned year,
   car->year = year;
   car->cost = cost;
   car->km_driven = km_driven;
-  car->client_id = 0;
   return car;
 }
 
