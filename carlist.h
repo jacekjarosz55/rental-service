@@ -1,23 +1,9 @@
 #ifndef CARLIST_H
 #define CARLIST_H
 
-#include "clientlist.h"
+#include "car.h"
+
 #include <stdbool.h>
-
-struct Car {
-  unsigned id;
-  char *model;
-  char *make;
-  unsigned year;
-  unsigned cost;
-  unsigned km_driven;
-  unsigned client_id;
-};
-typedef struct Car Car;
-
-Car *make_car_data(unsigned id, char *make, char *model, unsigned year, unsigned cost, unsigned km_driven);
-void free_car_data(Car *car);
-
 
 struct CarNode {
   struct CarNode *next; 
