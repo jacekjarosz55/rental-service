@@ -36,7 +36,6 @@ int main() {
   */
 
   RentNode *rent = rent_list;
-
   while(rent != NULL) {
     CarNode *car_node = get_car_by_id(car_list, rent->data->car_id);
     ClientNode *client_node = get_client_by_id(client_list, rent->data->client_id);
@@ -46,12 +45,15 @@ int main() {
     Car *car = car_node->data;
     Client *client = client_node->data;
 
-    printf("Wypozyczenie: auto %s %s dla %s %s, data: %s\n", car->make, car->model, client->first_name, client->last_name, rent->data->date);
+    printf("Wypozyczenie: auto %s %s dla %s %s, data: %s\n",
+           car->make,
+           car->model,
+           client->first_name,
+           client->last_name,
+           rent->data->date);
     rent = rent->next;
   }
   
-  
-
   free_rent_list(rent_list);
   free_car_list(car_list);
   free_client_list(client_list);
