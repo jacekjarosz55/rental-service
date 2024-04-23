@@ -2,3 +2,4 @@ rental
 rental.exe
 build/
 .cache/
+compile-commands.json
