@@ -79,10 +79,43 @@ void foreach_client(ClientNode *head, void(*func)(Client*)) {
   }
 }
 
+
+bool client_search_filter(Client* client, char *searchTerm) {
+  return (
+      strstr(client->first_name ,searchTerm) != NULL
+      || strstr(client->last_name ,searchTerm) != NULL
+      || strstr(client->email ,searchTerm) != NULL
+      || strstr(client->phone_number ,searchTerm) != NULL
+  );
+}
+
+ClientNode *client_filtered_list(ClientNode *head, char* searchTerm, bool(*filter_func)(Client*, char*)) { 
+  ClientNode *newList = NULL;
+  while(head != NULL) {
+    if(head->data && filter_func(head->data, searchTerm)) {
+      add_client(&newList, head->data);
+    }
+    head=head->next;
+  }
+  return newList;
+}
+
+
+
+
+
 void free_client(ClientNode *client) {
   free_client_data(client->data);
   free(client);
 }
+
+void free_client_list_only(ClientNode *head) {
+  if(head->next) {
+    free_client_list_only(head->next);
+  }
+  free(head);
+}
+
 
 void free_client_list(ClientNode *head) {
   if(head->next) {
@@ -90,3 +123,7 @@ void free_client_list(ClientNode *head) {
   }
   free_client(head);
 }
+
+
+
+

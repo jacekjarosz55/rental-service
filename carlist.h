@@ -22,6 +22,12 @@ CarNode *get_car_by_make_model(CarNode *head, char *make, char *model);
 
 bool remove_car_by_id(CarNode *head, unsigned id);
 
+void sort_car_list(CarNode **head, bool(*comparator)(Car*, Car*), bool descending);
+
+bool car_make_comparator(Car* a, Car* b);
+bool car_year_comparator(Car* a, Car* b);
+bool car_km_driven_comparator(Car* a, Car* b);
+
 void foreach_car(CarNode *head, void(*func)(Car*));
 void free_car(CarNode *car);
 void free_car_list(CarNode *head);

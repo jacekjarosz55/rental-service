@@ -18,5 +18,9 @@ bool remove_client_by_id(ClientNode *head, unsigned id);
 void foreach_client(ClientNode *head, void(*func)(Client*));
 void free_client(ClientNode *client);
 void free_client_list(ClientNode *head);
+void free_client_list_only(ClientNode *head);
+
+ClientNode *client_filtered_list(ClientNode *head, char *searchTerm, bool(*filter_func)(Client*,char*));
+bool client_search_filter(Client* client, char *searchTerm);
 
 #endif

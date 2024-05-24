@@ -61,6 +61,45 @@ bool update_car(CarNode *head, unsigned int id, Car *new_data) {
   return true;
 }
 
+bool car_make_comparator(Car* a, Car* b) {
+ return (strcmp(a->make, b->make) > 0);
+}
+
+bool car_year_comparator(Car* a, Car* b) {
+ return a->year > b->year;
+}
+
+bool car_km_driven_comparator(Car* a, Car* b) {
+ return a->km_driven > b->km_driven;
+}
+
+void sort_car_list(CarNode **head, bool(*comparator)(Car*, Car*), bool descending) {
+    if (*head == NULL || (*head)->next == NULL) {
+        return;
+    }
+
+    bool swapped;
+    CarNode *ptr1;
+    CarNode *lptr = NULL;
+
+    do {
+        swapped = false;
+        ptr1 = *head;
+
+        while (ptr1->next != lptr) {
+            if (descending ? !comparator(ptr1->data, ptr1->next->data) : comparator(ptr1->data, ptr1->next->data)) {
+                Car *temp = ptr1->data;
+                ptr1->data = ptr1->next->data;
+                ptr1->next->data = temp;
+                swapped = true;
+            }
+            ptr1 = ptr1->next;
+        }
+        lptr = ptr1;
+    } while (swapped);
+}
+
+
 void free_car(CarNode *car) {
   free_car_data(car->data);
   car->data = NULL;

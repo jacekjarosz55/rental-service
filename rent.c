@@ -1,10 +1,12 @@
 #include "rent.h"
 #include "util.h"
+#include "carlist.h"
 
+#include <stdbool.h>
 #include <stdlib.h>
 
 unsigned _RENT_AUTO_INCREMENT = 1;
-Rent *make_rent_data(unsigned id, unsigned car_id, unsigned client_id, char *date) {
+Rent *make_rent_data(unsigned id, unsigned car_id, unsigned client_id, char *date_start, char *date_end, bool finished) {
   Rent *rent = (Rent *)malloc(sizeof(Rent));
   if (rent == NULL)
     return NULL;
@@ -15,12 +17,42 @@ Rent *make_rent_data(unsigned id, unsigned car_id, unsigned client_id, char *dat
   }
   rent->client_id = client_id;
   rent->car_id = car_id;
-  rent->date = copied_string(date);
+  rent->date_start = copied_string(date_start);
+  rent->date_end = copied_string(date_end);
+  rent->finished = finished;
   return rent;
 }
 
 void free_rent_data(Rent *rent) {
-  free(rent->date);
+  free(rent->date_start);
+  free(rent->date_end);
   free(rent);
+}
+
+
+Car *fetch_car(Rent *rent, CarNode *cars)  {
+  CarNode *found = get_car_by_id(cars,rent->car_id);
+  if (found) {
+    return found->data;
+  } else {
+    return NULL;
+  }
+}
+
+Client *fetch_client(Rent *rent, ClientNode *clients)  {
+  ClientNode *found = get_client_by_id(clients,rent->client_id);
+  if (found) {
+    return found->data;
+  } else {
+    return NULL;
+  }
+}
+
+void rent_finish(Rent *rent, CarNode *cars, int km_driven) {
+  rent->finished = true;
+  Car *car = fetch_car(rent, cars);
+  if (car) {
+    car->km_driven+=km_driven;
+  }
 }
 
