@@ -1,67 +1,108 @@
 #include <stdio.h>
-#include <assert.h>
+#include <stdlib.h>
+#include <string.h>
 #include "carlist.h"
 #include "clientlist.h"
-#include "rent.h"
 #include "rentlist.h"
+#include "util.h"
 
-void print_car(Car *car) {
-  printf("Car: #%u %s %s, year: %u, cost: %u, km: %u", car->id, car->make, car->model, car->year, car->cost, car->km_driven);
-  puts("");
-}
-
-void print_client(Client *client) {
-  printf("Client: %s %s, email: %s\n", client->first_name, client->last_name, client->email);
-}
-
+// Function prototypes
+void displayMenu();
+void addCar();
+void removeCar();
+void addClient();
+void removeClient();
+void rentCar();
+void searchClient();
+void sortCars();
 
 int main() {
-  /*
-  CarNode *car_list = NULL;
-  add_car(&car_list, make_car_data(0, "Ford", "Focus", 2004, 10000, 20345));
-  add_car(&car_list, make_car_data(0, "Honda", "Jazz", 2002, 5000, 10933));
-  add_car(&car_list, make_car_data(0, "Bonda", "Kazz", 2002, 5000, 10933));
-  add_car(&car_list, make_car_data(0, "Londa", "Dazz", 2002, 5000, 10933));
-  */
-  CarNode *car_list = car_list_new_from_file("cars.csv");
-  assert(car_list);
+    int choice;
+    do {
+        displayMenu();
+        printf("Enter your choice: ");
+        scanf("%d", &choice);
 
-  //sort_car_list_by_make(&car_list);
-  sort_car_list(&car_list, car_year_comparator,false);
-  foreach_car(car_list, print_car);
-  printf("\n");
-  sort_car_list(&car_list, car_year_comparator,true);
-  foreach_car(car_list, print_car);
-  //assert(get_car_by_make_model(car_list, "Ford", "Focus") != NULL);
+        switch(choice) {
+            case 1: addCar(); break;
+            case 2: removeCar(); break;
+            case 3: addClient(); break;
+            case 4: removeClient(); break;
+            case 5: rentCar(); break;
+            case 6: searchClient(); break;
+            case 7: sortCars(); break;
+            case 0: printf("Exiting...\n"); break;
+            default: printf("Invalid choice. Please try again.\n");
+        }
+    } while(choice != 0);
 
-  ClientNode *client_list = NULL;
-  add_client(&client_list, make_client_data(0, "Marcin", "Furmańczyk", "997", "marcin@o2.pl"));
-  add_client(&client_list, make_client_data(0, "Jacek", "Jarosz", "333", "andrzejduda@gov.pl"));
-  add_client(&client_list, make_client_data(0, "Pablo", "Escobar", "zastrzezony", "pablo@pabloscartel.es"));
-
-  ClientNode *filtered_list = client_filtered_list(
-    client_list,
-    "Marcin",
-    client_search_filter);
-
-  foreach_client(filtered_list, print_client);
-
-  free_client_list_only(filtered_list);
-
-
-  ClientNode *jacek = get_client_by_full_name(client_list, "Jacek", "Jarosz");
-  CarNode *focus = get_car_by_make_model(car_list, "Ford", "Focus");
-
-  RentNode *rent_list = NULL;
-  add_rent(&rent_list, make_rent_data(0, focus->data->id, jacek->data->id, "10-02-2024", "11-02-2024", false));
-  //car_list_save_to_file(car_list, "cars.csv");
-
-  //cleanup
-  free_rent_list(rent_list);
-  free_car_list(car_list);
-  free_client_list(client_list);
-  return 0;
+    return 0;
 }
 
+void displayMenu() {
+    printf("\nRental Service Menu:\n");
+    printf("1. Add Car\n");
+    printf("2. Remove Car\n");
+    printf("3. Add Client\n");
+    printf("4. Remove Client\n");
+    printf("5. Rent Car\n");
+    printf("6. Search Client\n");
+    printf("7. Sort Cars\n");
+    printf("0. Exit\n");
+}
 
+void addCar() {
+    // Implementation to add a car
+    printf("Adding a car...\n");
+    // Your code to interact with carlist.c
+}
+
+void removeCar() {
+    // Implementation to remove a car
+    printf("Removing a car...\n");
+    // Your code to interact with carlist.c
+}
+
+void addClient() {
+    // Implementation to add a client
+    printf("Adding a client...\n");
+    // Your code to interact with clientlist.c
+}
+
+void removeClient() {
+    // Implementation to remove a client
+    printf("Removing a client...\n");
+    // Your code to interact with clientlist.c
+}
+
+void rentCar() {
+    // Implementation to rent a car
+    printf("Renting a car...\n");
+    // Your code to interact with rentlist.c
+}
+
+void searchClient() {
+    // Implementation to search for a client
+    printf("Searching for a client...\n");
+    // Your code to interact with clientlist.c
+}
+
+void sortCars() {
+    int choice;
+    printf("Sort cars by:\n");
+    printf("1. Year\n");
+    printf("2. Make\n");
+    printf("Enter your choice: ");
+    scanf("%d", &choice);
+
+    if (choice == 1) {
+        printf("Sorting cars by year...\n");
+        // Your code to sort cars by year using carlist.c
+    } else if (choice == 2) {
+        printf("Sorting cars by make...\n");
+        // Your code to sort cars by make using carlist.c
+    } else {
+        printf("Invalid choice.\n");
+    }
+}
 
