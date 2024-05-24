@@ -95,5 +95,51 @@ void free_rent_list(RentNode *head) {
   free_rent(head);
 }
 
+bool rent_list_save_to_file(RentNode *head, char *filename) {
+  FILE *file = fopen(filename, "w");
+  if (!file) return false;
+  while(head != NULL) {
+    if (head->data) {
+      fprintf(
+        file,
+        "%u,%u,%u,%u,%s,%s\n",
+        head->data->id,
+        head->data->car_id,
+        head->data->client_id,
+        head->data->finished,
+        head->data->date_start,
+        head->data->date_end
+      );
+    }
+    head=head->next;
+  }
+  fclose(file);
+  return true;
+}
+
+
+
+RentNode *rent_list_new_from_file(char *filename) {
+  FILE *file = fopen(filename, "r");
+  if(!file) return NULL;
+
+  RentNode *rents = NULL;
+
+  char buf[1024];
+  while(fgets(buf,sizeof(buf), file)) {
+    unsigned id;
+    unsigned car_id;
+    unsigned client_id;
+    int finished;
+    char date_start[50];
+    char date_end[50];
+    int res = sscanf(buf, " %u,%u,%u,%d,%49[^,],%49[^,]\n", &id, &car_id, &client_id, &finished, date_start, date_end);
+    if (res == 6){
+      add_rent(&rents, make_rent_data(id, car_id, client_id, date_start, date_end, finished));
+    } 
+  }
+  fclose(file);
+  return rents;
+}
 
 

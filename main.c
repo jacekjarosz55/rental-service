@@ -16,11 +16,15 @@ void print_client(Client *client) {
 
 
 int main() {
+  /*
   CarNode *car_list = NULL;
   add_car(&car_list, make_car_data(0, "Ford", "Focus", 2004, 10000, 20345));
   add_car(&car_list, make_car_data(0, "Honda", "Jazz", 2002, 5000, 10933));
   add_car(&car_list, make_car_data(0, "Bonda", "Kazz", 2002, 5000, 10933));
   add_car(&car_list, make_car_data(0, "Londa", "Dazz", 2002, 5000, 10933));
+  */
+  CarNode *car_list = car_list_new_from_file("cars.csv");
+  assert(car_list);
 
   //sort_car_list_by_make(&car_list);
   sort_car_list(&car_list, car_year_comparator,false);
@@ -50,7 +54,7 @@ int main() {
 
   RentNode *rent_list = NULL;
   add_rent(&rent_list, make_rent_data(0, focus->data->id, jacek->data->id, "10-02-2024", "11-02-2024", false));
-
+  //car_list_save_to_file(car_list, "cars.csv");
 
   //cleanup
   free_rent_list(rent_list);

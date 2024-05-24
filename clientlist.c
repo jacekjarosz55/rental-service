@@ -1,4 +1,5 @@
 #include "clientlist.h"
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -125,5 +126,46 @@ void free_client_list(ClientNode *head) {
 }
 
 
+bool client_list_save_to_file(ClientNode *head, char *filename) {
+  FILE *file = fopen(filename, "w");
+  if (!file) return false;
+  while(head != NULL) {
+    if (head->data) {
+      fprintf(
+        file,
+        "%u,%s,%s,%s,%s\n",
+        head->data->id,
+        head->data->first_name,
+        head->data->last_name,
+        head->data->phone_number,
+        head->data->email
+      );
+    }
+    head=head->next;
+  }
+  fclose(file);
+  return true;
+}
 
+ClientNode* client_list_new_from_file(char *filename) {
+  FILE *file = fopen(filename, "r");
+  if(!file) return NULL;
 
+  ClientNode *clients = NULL;
+
+  char buf[1024];
+  while(fgets(buf,sizeof(buf), file)) {
+    unsigned id;
+    char first_name[50];
+    char last_name[50];
+    char phone_number[50];
+    char email[50];
+
+    int res = sscanf(buf, " %u,%49[^,],%49[^,],%49[^,],%49[^,]\n", &id, first_name, last_name, phone_number, email);
+    if (res == 5){
+      add_client(&clients, make_client_data(id, first_name, last_name, phone_number, email));
+    } 
+  }
+  fclose(file);
+  return clients;
+}

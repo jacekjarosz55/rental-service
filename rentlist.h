@@ -20,4 +20,7 @@ RentNode *find_rent(RentNode *head, unsigned car_id, unsigned client_id);
 void foreach_rent(RentNode *head, void(*func)(Rent*));
 void free_rent(RentNode *rent);
 void free_rent_list(RentNode *head);
+
+bool rent_list_save_to_file(RentNode *head, char *filename);
+RentNode* rent_list_new_from_file(char *filename);
 #endif

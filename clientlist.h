@@ -20,6 +20,11 @@ void free_client(ClientNode *client);
 void free_client_list(ClientNode *head);
 void free_client_list_only(ClientNode *head);
 
+
+bool client_list_save_to_file(ClientNode *head, char *filename);
+ClientNode* client_list_new_from_file(char *filename);
+
+
 ClientNode *client_filtered_list(ClientNode *head, char *searchTerm, bool(*filter_func)(Client*,char*));
 bool client_search_filter(Client* client, char *searchTerm);
 

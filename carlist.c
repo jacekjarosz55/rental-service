@@ -1,4 +1,5 @@
 #include "carlist.h"
+#include "car.h"
 
 #include <assert.h>
 #include <stdio.h>
@@ -127,6 +128,52 @@ void foreach_car(CarNode *head, void (*func)(Car *)) {
     func(head->data);
     head = head->next;
   }
+}
+
+bool car_list_save_to_file(CarNode *head, char *filename) {
+  FILE *file = fopen(filename, "w");
+  if (!file) return false;
+  while(head != NULL) {
+    if (head->data) {
+      fprintf(
+        file,
+        "%u,%s,%s,%u,%u,%u\n",
+        head->data->id,
+        head->data->model,
+        head->data->make,
+        head->data->year,
+        head->data->cost,
+        head->data->km_driven
+      );
+    }
+    head=head->next;
+  }
+  fclose(file);
+  return true;
+}
+
+CarNode* car_list_new_from_file(char *filename) {
+  FILE *file = fopen(filename, "r");
+  if(!file) return NULL;
+
+  CarNode *cars = NULL;
+
+  char buf[1024];
+  while(fgets(buf,sizeof(buf), file)) {
+    unsigned id;
+    char model[50];
+    char make[50];
+    unsigned year;
+    unsigned cost;
+    unsigned km_driven;
+
+    int res = sscanf(buf, " %u,%49[^,],%49[^,],%u,%u,%u\n", &id, model, make, &year, &cost, &km_driven);
+    if (res == 6){
+      add_car(&cars, make_car_data(id, make, model, year, cost, km_driven));
+    } 
+  }
+  fclose(file);
+  return cars;
 }
 
 void free_car_list(CarNode *head) {

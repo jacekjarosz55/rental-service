@@ -29,6 +29,10 @@ bool car_year_comparator(Car* a, Car* b);
 bool car_km_driven_comparator(Car* a, Car* b);
 
 void foreach_car(CarNode *head, void(*func)(Car*));
+
+bool car_list_save_to_file(CarNode *head, char *filename);
+CarNode* car_list_new_from_file(char *filename);
+
 void free_car(CarNode *car);
 void free_car_list(CarNode *head);
 #endif
