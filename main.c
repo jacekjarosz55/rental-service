@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <unistd.h>
 #include <stdlib.h>
 #include <string.h>
 #include "carlist.h"
@@ -8,15 +9,20 @@
 
 // Function prototypes
 void displayMenu();
-void addCar();
+void addCar(CarNode **car_list);
 void removeCar();
-void addClient();
+void addClient(ClientNode **client_list);
 void removeClient();
 void rentCar();
 void searchClient();
 void sortCars();
+int generate_id();
+void displayCars();
+void save_all(ClientNode *client_list, CarNode *car_list);
 
 int main() {
+    CarNode *car_list = car_list_new_from_file("cars.csv");
+    ClientNode *client_list = client_list_new_from_file("clients.csv");
     int choice;
     do {
         displayMenu();
@@ -24,14 +30,15 @@ int main() {
         scanf("%d", &choice);
 
         switch(choice) {
-            case 1: addCar(); break;
+            case 1: addCar(&car_list); break;
             case 2: removeCar(); break;
-            case 3: addClient(); break;
+            case 3: addClient(&client_list); break;
             case 4: removeClient(); break;
             case 5: rentCar(); break;
             case 6: searchClient(); break;
             case 7: sortCars(); break;
-            case 0: printf("Exiting...\n"); break;
+            case 8: displayCars(car_list); break;
+            case 0: printf("Exiting...\n"); save_all(client_list, car_list); break;
             default: printf("Invalid choice. Please try again.\n");
         }
     } while(choice != 0);
@@ -48,43 +55,81 @@ void displayMenu() {
     printf("5. Rent Car\n");
     printf("6. Search Client\n");
     printf("7. Sort Cars\n");
-    printf("0. Exit\n");
+    printf("8. Display Cars\n");
+    printf("0. Save and Exit\n");
 }
 
-void addCar() {
-    // Implementation to add a car
-    printf("Adding a car...\n");
-    // Your code to interact with carlist.c
+void addCar(CarNode **car_list) {
+    char make[20];
+    char model[20];
+    unsigned year;
+    unsigned cost;
+    unsigned km_driven;
+    printf("Enter make: \n");
+    scanf("%s", make);
+    printf("Enter model name: \n");
+    scanf("%s", model);
+    printf("Enter year of production: \n");
+    scanf("%u", &year);
+    printf("Enter cost of rent (per kilometer driven): \n");
+    scanf("%u", &cost);
+    printf("Enter car's mileage [km]\n");
+    scanf("%u", &km_driven);
+    
+    system("cls");
+    Car *newCar = make_car_data(generate_id(), make, model, year, cost, km_driven);
+    add_car(car_list, newCar);
+    if(newCar != NULL) {
+        printf("\n Car added successfully\n");
+    } else {
+        printf("\nSomething went wrong... :(\n");
+    }
+    sleep(2);
+    system("cls");
 }
 
 void removeCar() {
-    // Implementation to remove a car
     printf("Removing a car...\n");
-    // Your code to interact with carlist.c
 }
 
-void addClient() {
-    // Implementation to add a client
-    printf("Adding a client...\n");
-    // Your code to interact with clientlist.c
+void addClient(ClientNode **client_list) {
+    char first_name[20];
+    char last_name[20];
+    char email[50];
+    char phone_number[20];
+
+    printf("Enter first name: ");
+    scanf("%s", first_name);
+    printf("Enter last name: ");
+    scanf("%s", last_name);
+    printf("Enter email address: ");
+    scanf("%s", email);
+    printf("Enter phone number: ");
+    scanf("%s", phone_number);
+
+    Client *newClient = make_client_data(generate_id(), first_name, last_name, email, phone_number);
+    add_client(client_list, newClient);
+
+    if (newClient != NULL) {
+        printf("Client added successfully.\n");
+    } else {
+        printf("Something went wrong while adding the client.\n");
+    }
+
+    sleep(2);
+    system("cls");
 }
 
 void removeClient() {
-    // Implementation to remove a client
     printf("Removing a client...\n");
-    // Your code to interact with clientlist.c
 }
 
 void rentCar() {
-    // Implementation to rent a car
     printf("Renting a car...\n");
-    // Your code to interact with rentlist.c
 }
 
 void searchClient() {
-    // Implementation to search for a client
     printf("Searching for a client...\n");
-    // Your code to interact with clientlist.c
 }
 
 void sortCars() {
@@ -97,12 +142,22 @@ void sortCars() {
 
     if (choice == 1) {
         printf("Sorting cars by year...\n");
-        // Your code to sort cars by year using carlist.c
     } else if (choice == 2) {
         printf("Sorting cars by make...\n");
-        // Your code to sort cars by make using carlist.c
     } else {
         printf("Invalid choice.\n");
     }
 }
 
+void displayCars(CarNode *car_list) {
+    // foreach_car(car_list);
+}
+
+int generate_id() {
+    return rand() % 1000000000;
+}
+
+void save_all(ClientNode *client_list, CarNode *car_list) {
+    car_list_save_to_file(car_list, "cars.csv");
+    client_list_save_to_file(client_list, "clients.csv");
+}
