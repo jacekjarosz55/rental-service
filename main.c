@@ -6,6 +6,7 @@
 #include "clientlist.h"
 #include "rentlist.h"
 #include "util.h"
+#include <time.h>
 
 // Function prototypes
 void displayMenu();
@@ -154,6 +155,7 @@ void displayCars(CarNode *car_list) {
 }
 
 int generate_id() {
+    srand(time(NULL));
     return rand() % 1000000000;
 }
 
