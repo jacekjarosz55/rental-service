@@ -18,7 +18,7 @@ void rentCar();
 void searchClient();
 void sortCars();
 int generate_id();
-void displayCars();
+void displayCars(CarNode *car_list);
 void save_all(ClientNode *client_list, CarNode *car_list);
 
 int main() {
