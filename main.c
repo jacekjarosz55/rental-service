@@ -133,7 +133,7 @@ void searchClient() {
     printf("Searching for a client...\n");
 }
 
-void sortCars() {
+void sortCars(CarNode **cars) {
     int choice;
     printf("Sort cars by:\n");
     printf("1. Year\n");
@@ -143,15 +143,21 @@ void sortCars() {
 
     if (choice == 1) {
         printf("Sorting cars by year...\n");
+        sort_car_list(cars, car_year_comparator, true);
     } else if (choice == 2) {
         printf("Sorting cars by make...\n");
+        sort_car_list(cars, car_make_comparator, false);
     } else {
         printf("Invalid choice.\n");
     }
 }
 
+void print_car(Car *car) {
+  printf("#%u Car: %s %s - rok: %u\n",car->id, car->make, car->model, car->year);
+}
+
 void displayCars(CarNode *car_list) {
-    // foreach_car(car_list);
+  foreach_car(car_list, print_car);
 }
 
 int generate_id() {
