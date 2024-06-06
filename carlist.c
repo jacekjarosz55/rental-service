@@ -107,12 +107,19 @@ void free_car(CarNode *car) {
   free(car);
 }
 
-bool remove_car_by_id(CarNode *head, unsigned id) {
-  CarNode *car = get_car_by_id(head, id);
+bool remove_car_by_id(CarNode **head, unsigned id) {
+  if(head == NULL && *head == NULL) return false;
+  CarNode *car = get_car_by_id(*head, id);
   if (car == NULL) {
     return false;
   }
-  CarNode *cur = head;
+  if (car == *head) {
+    CarNode *tmp = *head;
+    *head = (*head)->next;
+    free_car(tmp);
+    return true;
+  }
+  CarNode *cur = *head;
   while (cur->next != car) {
     if (cur->next == NULL)
       return false;

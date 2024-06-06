@@ -66,12 +66,19 @@ void free_rent(RentNode *rent) {
   free(rent);
 }
 
-bool remove_rent_by_id(RentNode *head, unsigned id) {
-  RentNode *rent = get_rent_by_id(head, id);
+bool remove_rent_by_id(RentNode **head, unsigned id) {
+  if(head == NULL && *head == NULL) return false;
+  RentNode *rent = get_rent_by_id(*head, id);
   if (rent == NULL) {
     return false;
   }
-  RentNode *cur = head;
+  if (rent == *head) {
+    RentNode *tmp = *head;
+    *head = (*head)->next;
+    free_rent(tmp);
+    return true;
+  }
+  RentNode *cur = *head;
   while (cur->next != rent) {
     if (cur->next == NULL)
       return false;
@@ -81,6 +88,7 @@ bool remove_rent_by_id(RentNode *head, unsigned id) {
   free_rent(rent);
   return true;
 }
+
 
 void foreach_rent(RentNode *head, void (*func)(Rent *)) {
   while (head != NULL) {

@@ -63,7 +63,7 @@ ClientNode *get_client_by_full_name(ClientNode *head, char *first_name, char *la
  * @param id Identifier of the client to be removed.
  * @return True if the client was removed, false otherwise.
  */
-bool remove_client_by_id(ClientNode *head, unsigned id);
+bool remove_client_by_id(ClientNode **head, unsigned id);
 
 /**
  * @brief Applies a function to each client in the list.

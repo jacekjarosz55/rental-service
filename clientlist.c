@@ -56,12 +56,20 @@ ClientNode *get_client_by_full_name(ClientNode *head, char *first_name, char *la
   return NULL;
 }
 
-bool remove_client_by_id(ClientNode *head, unsigned id) {
-  ClientNode *client = get_client_by_id(head, id);
+
+bool remove_client_by_id(ClientNode **head, unsigned id) {
+  if(head == NULL && *head == NULL) return false;
+  ClientNode *client = get_client_by_id(*head, id);
   if (client == NULL) {
     return false;
   }
-  ClientNode *cur = head;
+  if (client == *head) {
+    ClientNode *tmp = *head;
+    *head = (*head)->next;
+    free_client(tmp);
+    return true;
+  }
+  ClientNode *cur = *head;
   while (cur->next != client) {
     if (cur->next == NULL)
       return false;

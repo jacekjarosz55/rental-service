@@ -53,7 +53,7 @@ RentNode *get_rent_by_id(RentNode *head, unsigned id);
  * @param id Identifier of the rent to be removed.
  * @return True if the rent was removed, false otherwise.
  */
-bool remove_rent_by_id(RentNode *head, unsigned id);
+bool remove_rent_by_id(RentNode **head, unsigned id);
 
 /**
  * @brief Finds a rent in the list by car and client IDs.

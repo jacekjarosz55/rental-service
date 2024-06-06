@@ -8,18 +8,8 @@
 #include "util.h"
 #include <time.h>
 
-void displayMenu() {
-    printf("\nRental Service Menu:\n");
-    printf("1. Add Car\n");
-    printf("2. Remove Car\n");
-    printf("3. Add Client\n");
-    printf("4. Remove Client\n");
-    printf("5. Rent Car\n");
-    printf("6. Search Client\n");
-    printf("7. Sort Cars\n");
-    printf("8. Display Cars\n");
-    printf("0. Save and Exit\n");
-}
+
+
 
 void addCar(CarNode **car_list) {
     char make[20];
@@ -38,7 +28,6 @@ void addCar(CarNode **car_list) {
     printf("Enter car's mileage [km]\n");
     scanf("%u", &km_driven);
     
-    system("cls");
     Car *newCar = make_car_data(0, make, model, year, cost, km_driven);
     add_car(car_list, newCar);
     if(newCar != NULL) {
@@ -47,12 +36,41 @@ void addCar(CarNode **car_list) {
         printf("\nSomething went wrong... :(\n");
     }
     sleep(2);
-    system("cls");
 }
 
-void removeCar() {
-    printf("Removing a car...\n");
+void removeCar(CarNode **head) {
+    unsigned removeId;
+    printf("ID of Car to remove:\n");
+    scanf("%u", &removeId);
+    if (remove_car_by_id(head, removeId)) {
+      printf("Removed successfully.\n");
+    } else {
+      printf("Could not remove.\n");
+    }
 }
+
+void removeClient(ClientNode **head) {
+    unsigned removeId;
+    printf("ID of Client to remove:\n");
+    scanf("%u", &removeId);
+    if (remove_client_by_id(head, removeId)) {
+      printf("Removed successfully.\n");
+    } else {
+      printf("Could not remove.\n");
+    }
+}
+
+void removeRent(RentNode **head) {
+    unsigned removeId;
+    printf("ID of Rent to remove:\n");
+    scanf("%u", &removeId);
+    if (remove_rent_by_id(head, removeId)) {
+      printf("Removed successfully.\n");
+    } else {
+      printf("Could not remove.\n");
+    }
+}
+
 
 void addClient(ClientNode **client_list) {
     char first_name[20];
@@ -81,17 +99,15 @@ void addClient(ClientNode **client_list) {
     sleep(2);
     system("cls");
 }
-
-void removeClient() {
-    printf("Removing a client...\n");
-}
-
 void rentCar() {
     printf("Renting a car...\n");
 }
 
-void searchClient() {
-    printf("Searching for a client...\n");
+void searchClient(ClientNode *head) {
+  char searchTerm[255];
+  printf("Provide a search term (max 255 chars):\n");
+  fgets(searchTerm, sizeof(searchTerm), stdin);
+  client_filtered_list(head, searchTerm, client_search_filter);
 }
 
 void sortCars(CarNode **cars) {
@@ -116,40 +132,106 @@ void sortCars(CarNode **cars) {
 void print_car(Car *car) {
   printf("#%u Car: %s %s - rok: %u\n",car->id, car->make, car->model, car->year);
 }
-
 void displayCars(CarNode *car_list) {
   foreach_car(car_list, print_car);
 }
+void print_client(Client *client) {
+}
+void displayClients(ClientNode *client_list) {
+  foreach_client(client_list, print_client);
+}
 
-
-void save_all(ClientNode *client_list, CarNode *car_list) {
+void save_all(ClientNode *client_list, CarNode *car_list, RentNode *rent_list) {
     car_list_save_to_file(car_list, "cars.csv");
     client_list_save_to_file(client_list, "clients.csv");
+    rent_list_save_to_file(rent_list, "rents.csv");
+}
+
+void displayCarsMenu() {
+  int choice;
+  do {
+    printf("1.Add\n2.Remove\n3.List\n4.Sort\n0.Back\n");
+    scanf("%d", &choice);
+    switch(choice) {
+      case 1:
+        break;
+      case 2:
+        break;
+      case 3:
+        break;
+      case 0: 
+        return;
+        break;
+      default: printf("Invalid choice. Please try again.\n");
+    }
+  } while(choice != 0);
+}
+
+void displayClientsMenu() {
+  int choice;
+  do {
+    printf("1.Add\n2.Remove\n3.List\n4.Search\n0.Back\n");
+    scanf("%d", &choice);
+    switch(choice) {
+      case 1:
+        break;
+      case 2:
+        break;
+      case 3:
+        break;
+      case 0: 
+        return;
+        break;
+      default: printf("Invalid choice. Please try again.\n");
+    }
+  } while(choice != 0);
+}
+
+
+void displayRentsMenu() {
+  int choice;
+  do {
+    printf("1.Register\n2.Remove\n3.List\n0.Back\n");
+    scanf("%d", &choice);
+    switch(choice) {
+      case 1:
+        break;
+      case 2:
+        break;
+      case 3:
+        break;
+      case 0: 
+        return;
+        break;
+      default: printf("Invalid choice. Please try again.\n");
+    }
+  } while(choice != 0);
 }
 
 int main() {
     CarNode *car_list = car_list_new_from_file("cars.csv");
     ClientNode *client_list = client_list_new_from_file("clients.csv");
+    RentNode *rent_list = rent_list_new_from_file("rents.csv");
     int choice;
     do {
-        displayMenu();
-        printf("Enter your choice: ");
+        printf("1.Clients\n2.Cars\n3.Rents\n0.Save and Exit\nEnter your choice:\n");
         scanf("%d", &choice);
-
         switch(choice) {
-            case 1: addCar(&car_list); break;
-            case 2: removeCar(); break;
-            case 3: addClient(&client_list); break;
-            case 4: removeClient(); break;
-            case 5: rentCar(); break;
-            case 6: searchClient(); break;
-            case 7: sortCars(&car_list); break;
-            case 8: displayCars(car_list); break;
-            case 0: printf("Exiting...\n"); save_all(client_list, car_list); break;
+            case 1:
+              displayClientsMenu();
+              break;
+            case 2:
+              displayCarsMenu();
+              break;
+            case 3:
+              displayRentsMenu();
+              break;
+            case 0: 
+                printf("Exiting...\n");
+                save_all(client_list, car_list, rent_list);
+                break;
             default: printf("Invalid choice. Please try again.\n");
         }
     } while(choice != 0);
-
     return 0;
 }
-

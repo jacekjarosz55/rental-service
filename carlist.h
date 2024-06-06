@@ -63,7 +63,7 @@ CarNode *get_car_by_make_model(CarNode *head, char *make, char *model);
  * @param id Identifier of the car to be removed.
  * @return True if the car was removed, false otherwise.
  */
-bool remove_car_by_id(CarNode *head, unsigned id);
+bool remove_car_by_id(CarNode **head, unsigned id);
 
 /**
  * @brief Sorts the car list using a comparator function.
