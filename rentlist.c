@@ -96,6 +96,14 @@ void foreach_rent(RentNode *head, void (*func)(Rent *)) {
     head = head->next;
   }
 }
+void foreach_rent_included(RentNode *head, CarNode *car_head, ClientNode *client_head, void (*func)(Rent *, Car *, Client *)) {
+  while (head != NULL) {
+    Car *car = fetch_car(head->data, car_head);
+    Client *client = fetch_client(head->data, client_head);
+    func(head->data, car, client);
+    head = head->next;
+  }
+}
 
 void free_rent_list(RentNode *head) {
   if(head->next) {
@@ -142,7 +150,7 @@ RentNode *rent_list_new_from_file(char *filename) {
     int finished;
     char date_start[50];
     char date_end[50];
-    int res = sscanf(buf, " %u,%u,%u,%d,%49[^,],%49[^,]\n", &id, &car_id, &client_id, &finished, date_start, date_end);
+    int res = sscanf(buf, " %u,%u,%u,%d,%49[^,],%49s\n", &id, &car_id, &client_id, &finished, date_start, date_end);
     if (res == 6){
       if (id >= get_rent_auto_increment()) {
         set_rent_auto_increment(id+1);

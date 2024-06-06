@@ -169,7 +169,7 @@ ClientNode* client_list_new_from_file(char *filename) {
     char phone_number[50];
     char email[50];
 
-    int res = sscanf(buf, " %u,%49[^,],%49[^,],%49[^,],%49[^,]\n", &id, first_name, last_name, phone_number, email);
+    int res = sscanf(buf, " %u,%49[^,],%49[^,],%49[^,],%49[^\n]\n", &id, first_name, last_name, phone_number, email);
     if (res == 5){
       if (id >= get_client_auto_increment()) {
         set_client_auto_increment(id+1);

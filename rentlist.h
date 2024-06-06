@@ -74,6 +74,17 @@ RentNode *find_rent(RentNode *head, unsigned car_id, unsigned client_id);
 void foreach_rent(RentNode *head, void(*func)(Rent*));
 
 /**
+ * @brief Applies a function to each rent in the list, with exposed parameters for Car and Client related to the rent.
+ * 
+ * @param head Pointer to the head of the rent list.
+ * @param car_head Pointer to the head of the car list.
+ * @param client_head Pointer to the head of the client list.
+ * @param func Function to be applied to each rent (with rent, car and client as parameters)
+ */
+void foreach_rent_included(RentNode *head, CarNode *car_head, ClientNode *client_head, void(*func)(Rent*, Car*, Client*));
+
+
+/**
  * @brief Frees the memory allocated for a RentNode.
  * 
  * @param rent Pointer to the RentNode to be freed.

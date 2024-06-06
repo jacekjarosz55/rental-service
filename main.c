@@ -4,11 +4,8 @@
 #include <string.h>
 #include "carlist.h"
 #include "clientlist.h"
+#include "rent.h"
 #include "rentlist.h"
-#include "util.h"
-#include <time.h>
-
-
 
 
 void addCar(CarNode **car_list) {
@@ -35,8 +32,39 @@ void addCar(CarNode **car_list) {
     } else {
         printf("\nSomething went wrong... :(\n");
     }
-    sleep(2);
 }
+
+void addRent(RentNode **rent_list) {
+  unsigned car_id = 0;
+  unsigned client_id = 0;
+  char start_date[80];
+  char end_date[80];
+
+  do {
+    printf("Enter Car Id: \n");
+    scanf("%u", &car_id);
+  } while(car_id == 0);
+
+  do {
+  printf("Enter Client Id: \n");
+  scanf("%u", &client_id);
+  } while(car_id == 0);
+
+  do {
+    printf("Enter starting date:\n");
+    scanf("%s", start_date);
+  } while(strlen(start_date) < 8);
+
+  do {
+    printf("Enter end date:\n");
+    scanf("%s", end_date);
+  } while(strlen(end_date) < 8);
+
+  if (add_rent(rent_list, make_rent_data(0, car_id, client_id, start_date, end_date, false)) == NULL) {
+    printf("An error ocurred.");
+  }
+}
+
 
 void removeCar(CarNode **head) {
     unsigned removeId;
@@ -95,19 +123,59 @@ void addClient(ClientNode **client_list) {
     } else {
         printf("Something went wrong while adding the client.\n");
     }
-
-    sleep(2);
-    system("cls");
 }
-void rentCar() {
-    printf("Renting a car...\n");
+
+
+void print_client(Client *client) {
+  printf("#%u, %s %s, email: %s, phone: %s\n", client->id, client->first_name, client->last_name, client->email, client->phone_number);
+}
+
+void print_car(Car *car) {
+  printf("#%u Car: %s %s - year: %u, kilometers: %u\n",car->id, car->make, car->model, car->year, car->km_driven);
+}
+
+void print_rent(Rent *rent) {
+  printf("#%u Rent: car: #%u, client: #%u, start: %s, end: %s%s\n",rent->id, rent->car_id, rent->client_id, rent->date_start, rent->date_end, rent->finished ? ", finished" : "");
+}
+
+
+
+void print_rent_details(Rent *rent, CarNode *car_head, ClientNode *client_head) {
+  Car *car = fetch_car(rent, car_head);
+  Client *client = fetch_client(rent, client_head);
+  printf("#%u Rent details: car: #%u, client: #%u, start: %s, end: %s%s\n",rent->id, rent->car_id, rent->client_id, rent->date_start, rent->date_end, rent->finished ? ", finished" : "");
+  if (car) {
+    printf("Car info:\n");
+    print_car(car);
+  }
+  if (client) {
+    printf("Client info:\n");
+    print_client(client);
+  }
+}
+
+void rentDetails(RentNode *head, CarNode *car_head, ClientNode *client_head) {
+    unsigned rentId; 
+    printf("ID of Rent to detail:\n");
+    scanf("%u", &rentId);
+    RentNode *found = get_rent_by_id(head, rentId);
+    if(!found) {
+      printf("Can't find this rent ID\n");
+      return;
+    }
+    print_rent_details(found->data, car_head, client_head) ;
 }
 
 void searchClient(ClientNode *head) {
   char searchTerm[255];
   printf("Provide a search term (max 255 chars):\n");
-  fgets(searchTerm, sizeof(searchTerm), stdin);
-  client_filtered_list(head, searchTerm, client_search_filter);
+  scanf("%254s", searchTerm);
+  ClientNode *filtered = client_filtered_list(head, searchTerm, client_search_filter);
+  if(filtered == NULL) {
+    printf("No results.\n");
+    return;
+  }
+  foreach_client(filtered, print_client);
 }
 
 void sortCars(CarNode **cars) {
@@ -129,14 +197,8 @@ void sortCars(CarNode **cars) {
     }
 }
 
-void print_car(Car *car) {
-  printf("#%u Car: %s %s - rok: %u\n",car->id, car->make, car->model, car->year);
-}
 
 
-
-void print_client(Client *client) {
-}
 void displayClients(ClientNode *client_list) {
   foreach_client(client_list, print_client);
 }
@@ -172,11 +234,16 @@ void displayClientsMenu(ClientNode **client_list) {
     scanf("%d", &choice);
     switch(choice) {
       case 1:
+        addClient(client_list);
         break;
       case 2:
+        removeClient(client_list);
         break;
       case 3:
+        foreach_client(*client_list, print_client);
         break;
+      case 4:
+        searchClient(*client_list);
       case 0: 
         return;
         break;
@@ -189,14 +256,20 @@ void displayClientsMenu(ClientNode **client_list) {
 void displayRentsMenu(RentNode **rent_list, ClientNode *client_list, CarNode *car_list) {
   int choice;
   do {
-    printf("1.Register\n2.Remove\n3.List\n0.Back\nEnter your choice:\n");
+    printf("1.Register\n2.Remove\n3.List\n4.Details\n0.Back\nEnter your choice:\n");
     scanf("%d", &choice);
     switch(choice) {
       case 1:
+        addRent(rent_list);
         break;
       case 2:
+        removeRent(rent_list);
         break;
       case 3:
+        foreach_rent(*rent_list, print_rent);
+        break;
+      case 4:
+        rentDetails(*rent_list, car_list, client_list);
         break;
       case 0: 
         return;
