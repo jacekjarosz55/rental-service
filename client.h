@@ -34,7 +34,7 @@ unsigned get_client_auto_increment();
 /**
  * @brief Creates a new client data instance.
  * 
- * @param id Client identifier.
+ * @param id Client identifier. (leave 0 for auto increment)
  * @param first_name First name of the client.
  * @param last_name Last name of the client.
  * @param phone_number Phone number of the client.

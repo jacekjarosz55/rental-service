@@ -40,7 +40,7 @@ unsigned get_rent_auto_increment();
 /**
  * @brief Creates a new rent data instance.
  * 
- * @param id Rent identifier.
+ * @param id Rent identifier. (leave 0 for auto increment)
  * @param car_id Identifier of the rented car.
  * @param client_id Identifier of the client.
  * @param date_start Start date of the rent.

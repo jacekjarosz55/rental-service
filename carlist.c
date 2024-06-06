@@ -172,6 +172,9 @@ CarNode* car_list_new_from_file(char *filename) {
 
     int res = sscanf(buf, " %u,%49[^,],%49[^,],%u,%u,%u\n", &id, model, make, &year, &cost, &km_driven);
     if (res == 6){
+      if (id >= get_car_auto_increment()) {
+        set_car_auto_increment(id+1);
+      }
       add_car(&cars, make_car_data(id, make, model, year, cost, km_driven));
     } 
   }

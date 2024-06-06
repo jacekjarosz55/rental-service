@@ -34,7 +34,7 @@ unsigned get_car_auto_increment();
 /**
  * @brief Creates a new car data instance.
  * 
- * @param id Car identifier.
+ * @param id Car identifier. (leave 0 for auto increment)
  * @param make Make of the car.
  * @param model Model of the car.
  * @param year Manufacture year of the car.

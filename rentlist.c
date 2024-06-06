@@ -1,4 +1,5 @@
 #include "rentlist.h"
+#include "rent.h"
 
 #include <assert.h>
 #include <stdio.h>
@@ -135,6 +136,9 @@ RentNode *rent_list_new_from_file(char *filename) {
     char date_end[50];
     int res = sscanf(buf, " %u,%u,%u,%d,%49[^,],%49[^,]\n", &id, &car_id, &client_id, &finished, date_start, date_end);
     if (res == 6){
+      if (id >= get_rent_auto_increment()) {
+        set_rent_auto_increment(id+1);
+      }
       add_rent(&rents, make_rent_data(id, car_id, client_id, date_start, date_end, finished));
     } 
   }

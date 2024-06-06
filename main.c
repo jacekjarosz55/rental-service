@@ -17,7 +17,6 @@ void removeClient();
 void rentCar();
 void searchClient();
 void sortCars();
-int generate_id();
 void displayCars(CarNode *car_list);
 void save_all(ClientNode *client_list, CarNode *car_list);
 
@@ -108,7 +107,7 @@ void addClient(ClientNode **client_list) {
     printf("Enter phone number: ");
     scanf("%s", phone_number);
 
-    Client *newClient = make_client_data(generate_id(), first_name, last_name, email, phone_number);
+    Client *newClient = make_client_data(0, first_name, last_name, email, phone_number);
     add_client(client_list, newClient);
 
     if (newClient != NULL) {
@@ -160,10 +159,6 @@ void displayCars(CarNode *car_list) {
   foreach_car(car_list, print_car);
 }
 
-int generate_id() {
-    srand(time(NULL));
-    return rand() % 1000000000;
-}
 
 void save_all(ClientNode *client_list, CarNode *car_list) {
     car_list_save_to_file(car_list, "cars.csv");
