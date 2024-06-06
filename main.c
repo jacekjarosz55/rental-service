@@ -115,7 +115,7 @@ void sortCars(CarNode **cars) {
     printf("Sort cars by:\n");
     printf("1. Year\n");
     printf("2. Make\n");
-    printf("Enter your choice: ");
+    printf("Enter your choice: \n");
     scanf("%d", &choice);
 
     if (choice == 1) {
@@ -132,13 +132,78 @@ void sortCars(CarNode **cars) {
 void print_car(Car *car) {
   printf("#%u Car: %s %s - rok: %u\n",car->id, car->make, car->model, car->year);
 }
-void displayCars(CarNode *car_list) {
-  foreach_car(car_list, print_car);
-}
+
+
+
 void print_client(Client *client) {
 }
 void displayClients(ClientNode *client_list) {
   foreach_client(client_list, print_client);
+}
+void displayCarsMenu(CarNode **car_list) {
+  int choice;
+  do {
+    printf("1.Add\n2.Remove\n3.List\n4.Sort\n0.Back\nEnter your choice:\n");
+    scanf("%d", &choice);
+    switch(choice) {
+      case 1:
+        break;
+      case 2:
+        removeCar(car_list);
+        break;
+      case 3:
+        foreach_car(*car_list, print_car);
+        break;
+      case 4:
+        sortCars(car_list);
+        break;
+      case 0: 
+        return;
+        break;
+      default: printf("Invalid choice. Please try again.\n");
+    }
+  } while(choice != 0);
+}
+
+void displayClientsMenu(ClientNode **client_list) {
+  int choice;
+  do {
+    printf("1.Add\n2.Remove\n3.List\n4.Search\n0.Back\nEnter your choice:\n");
+    scanf("%d", &choice);
+    switch(choice) {
+      case 1:
+        break;
+      case 2:
+        break;
+      case 3:
+        break;
+      case 0: 
+        return;
+        break;
+      default: printf("Invalid choice. Please try again.\n");
+    }
+  } while(choice != 0);
+}
+
+
+void displayRentsMenu(RentNode **rent_list, ClientNode *client_list, CarNode *car_list) {
+  int choice;
+  do {
+    printf("1.Register\n2.Remove\n3.List\n0.Back\nEnter your choice:\n");
+    scanf("%d", &choice);
+    switch(choice) {
+      case 1:
+        break;
+      case 2:
+        break;
+      case 3:
+        break;
+      case 0: 
+        return;
+        break;
+      default: printf("Invalid choice. Please try again.\n");
+    }
+  } while(choice != 0);
 }
 
 void save_all(ClientNode *client_list, CarNode *car_list, RentNode *rent_list) {
@@ -147,66 +212,6 @@ void save_all(ClientNode *client_list, CarNode *car_list, RentNode *rent_list) {
     rent_list_save_to_file(rent_list, "rents.csv");
 }
 
-void displayCarsMenu() {
-  int choice;
-  do {
-    printf("1.Add\n2.Remove\n3.List\n4.Sort\n0.Back\n");
-    scanf("%d", &choice);
-    switch(choice) {
-      case 1:
-        break;
-      case 2:
-        break;
-      case 3:
-        break;
-      case 0: 
-        return;
-        break;
-      default: printf("Invalid choice. Please try again.\n");
-    }
-  } while(choice != 0);
-}
-
-void displayClientsMenu() {
-  int choice;
-  do {
-    printf("1.Add\n2.Remove\n3.List\n4.Search\n0.Back\n");
-    scanf("%d", &choice);
-    switch(choice) {
-      case 1:
-        break;
-      case 2:
-        break;
-      case 3:
-        break;
-      case 0: 
-        return;
-        break;
-      default: printf("Invalid choice. Please try again.\n");
-    }
-  } while(choice != 0);
-}
-
-
-void displayRentsMenu() {
-  int choice;
-  do {
-    printf("1.Register\n2.Remove\n3.List\n0.Back\n");
-    scanf("%d", &choice);
-    switch(choice) {
-      case 1:
-        break;
-      case 2:
-        break;
-      case 3:
-        break;
-      case 0: 
-        return;
-        break;
-      default: printf("Invalid choice. Please try again.\n");
-    }
-  } while(choice != 0);
-}
 
 int main() {
     CarNode *car_list = car_list_new_from_file("cars.csv");
@@ -218,13 +223,13 @@ int main() {
         scanf("%d", &choice);
         switch(choice) {
             case 1:
-              displayClientsMenu();
+              displayClientsMenu(&client_list);
               break;
             case 2:
-              displayCarsMenu();
+              displayCarsMenu(&car_list);
               break;
             case 3:
-              displayRentsMenu();
+              displayRentsMenu(&rent_list, client_list, car_list);
               break;
             case 0: 
                 printf("Exiting...\n");
