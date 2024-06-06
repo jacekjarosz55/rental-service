@@ -1,5 +1,5 @@
-/* @file rent.h
- * @brief Rent data structure definition.
+/** @file rent.h
+ *  @brief Rent data structure definition and its constructor / destructor.
  */
 #ifndef RENT_H
 #define RENT_H
@@ -24,6 +24,18 @@ struct Rent {
 };
 
 typedef struct Rent Rent;
+
+/** 
+ * Sets the auto increment value for automatic rent ids
+ * @param inc increment value to set.
+ */
+void set_rent_auto_increment(unsigned inc);
+/** 
+ * Gets the auto increment value for automatic rent ids
+ * @returns The current auto increment value for the automatic rent ids.
+ */
+unsigned get_rent_auto_increment();
+
 
 /**
  * @brief Creates a new rent data instance.

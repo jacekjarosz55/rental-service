@@ -2,7 +2,14 @@
 #include "client.h"
 #include <stdlib.h>
 
+
 unsigned _CLIENT_AUTO_INCREMENT = 1;
+void set_client_auto_increment(unsigned inc) {
+  _CLIENT_AUTO_INCREMENT = inc;
+}
+unsigned get_client_auto_increment() {
+  return _CLIENT_AUTO_INCREMENT;
+}
 
 Client *make_client_data( unsigned id, char *first_name, char *last_name, char *phone_number, char *email) {
   Client *new = (Client *)malloc(sizeof(Client));

@@ -1,7 +1,6 @@
-/** @file car.h 
- *  @brief Car data structure definition.
+/** @file car.h
+ *  @brief Car structure definition, and it's constructor / destructor
  */
-
 #ifndef CAR_H
 #define CAR_H
 
@@ -19,6 +18,18 @@ struct Car {
 };
 
 typedef struct Car Car;
+
+/** 
+ * Sets the auto increment value for automatic car ids
+ * @param inc increment value to set.
+ */
+void set_car_auto_increment(unsigned inc);
+/** 
+ * Gets the auto increment value for automatic car ids
+ * @returns The current auto increment value for the automatic car ids.
+ */
+unsigned get_car_auto_increment();
+
 
 /**
  * @brief Creates a new car data instance.

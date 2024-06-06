@@ -153,6 +153,9 @@ bool car_list_save_to_file(CarNode *head, char *filename) {
 }
 
 CarNode* car_list_new_from_file(char *filename) {
+  unsigned max_id = 0;
+
+
   FILE *file = fopen(filename, "r");
   if(!file) return NULL;
 

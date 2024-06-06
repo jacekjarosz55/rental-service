@@ -6,6 +6,13 @@
 #include <stdlib.h>
 
 unsigned _RENT_AUTO_INCREMENT = 1;
+void set_rent_auto_increment(unsigned inc) {
+  _RENT_AUTO_INCREMENT = inc;
+}
+unsigned get_rent_auto_increment() {
+  return _RENT_AUTO_INCREMENT;
+}
+
 Rent *make_rent_data(unsigned id, unsigned car_id, unsigned client_id, char *date_start, char *date_end, bool finished) {
   Rent *rent = (Rent *)malloc(sizeof(Rent));
   if (rent == NULL)

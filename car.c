@@ -2,7 +2,16 @@
 #include "util.h"
 #include <stdlib.h>
 
+
 unsigned _CAR_AUTO_INCREMENT = 1;
+void set_car_auto_increment(unsigned inc) {
+  _CAR_AUTO_INCREMENT = inc;
+}
+unsigned get_car_auto_increment() {
+  return _CAR_AUTO_INCREMENT;
+}
+
+
 Car *make_car_data(unsigned id, char *make, char *model, unsigned year,
                    unsigned cost, unsigned km_driven) {
   Car *car = (Car *)malloc(sizeof(Car));
