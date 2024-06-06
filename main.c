@@ -8,44 +8,6 @@
 #include "util.h"
 #include <time.h>
 
-// Function prototypes
-void displayMenu();
-void addCar(CarNode **car_list);
-void removeCar();
-void addClient(ClientNode **client_list);
-void removeClient();
-void rentCar();
-void searchClient();
-void sortCars();
-void displayCars(CarNode *car_list);
-void save_all(ClientNode *client_list, CarNode *car_list);
-
-int main() {
-    CarNode *car_list = car_list_new_from_file("cars.csv");
-    ClientNode *client_list = client_list_new_from_file("clients.csv");
-    int choice;
-    do {
-        displayMenu();
-        printf("Enter your choice: ");
-        scanf("%d", &choice);
-
-        switch(choice) {
-            case 1: addCar(&car_list); break;
-            case 2: removeCar(); break;
-            case 3: addClient(&client_list); break;
-            case 4: removeClient(); break;
-            case 5: rentCar(); break;
-            case 6: searchClient(); break;
-            case 7: sortCars(); break;
-            case 8: displayCars(car_list); break;
-            case 0: printf("Exiting...\n"); save_all(client_list, car_list); break;
-            default: printf("Invalid choice. Please try again.\n");
-        }
-    } while(choice != 0);
-
-    return 0;
-}
-
 void displayMenu() {
     printf("\nRental Service Menu:\n");
     printf("1. Add Car\n");
@@ -77,7 +39,7 @@ void addCar(CarNode **car_list) {
     scanf("%u", &km_driven);
     
     system("cls");
-    Car *newCar = make_car_data(generate_id(), make, model, year, cost, km_driven);
+    Car *newCar = make_car_data(0, make, model, year, cost, km_driven);
     add_car(car_list, newCar);
     if(newCar != NULL) {
         printf("\n Car added successfully\n");
@@ -164,3 +126,30 @@ void save_all(ClientNode *client_list, CarNode *car_list) {
     car_list_save_to_file(car_list, "cars.csv");
     client_list_save_to_file(client_list, "clients.csv");
 }
+
+int main() {
+    CarNode *car_list = car_list_new_from_file("cars.csv");
+    ClientNode *client_list = client_list_new_from_file("clients.csv");
+    int choice;
+    do {
+        displayMenu();
+        printf("Enter your choice: ");
+        scanf("%d", &choice);
+
+        switch(choice) {
+            case 1: addCar(&car_list); break;
+            case 2: removeCar(); break;
+            case 3: addClient(&client_list); break;
+            case 4: removeClient(); break;
+            case 5: rentCar(); break;
+            case 6: searchClient(); break;
+            case 7: sortCars(&car_list); break;
+            case 8: displayCars(car_list); break;
+            case 0: printf("Exiting...\n"); save_all(client_list, car_list); break;
+            default: printf("Invalid choice. Please try again.\n");
+        }
+    } while(choice != 0);
+
+    return 0;
+}
+
