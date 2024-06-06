@@ -4,4 +4,7 @@ rental: *.c *.h
 run: rental
 	./rental
 
-.PHONY: run
+docs:
+	doxygen
+
+.PHONY: run docs
