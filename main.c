@@ -226,9 +226,15 @@ void finishRent(RentNode *head, CarNode *car_head)
         printf("Can't find this rent ID\n");
         return;
     }
+    if (found->data->finished) { 
+      printf("Rent already finished.\n");
+      return;
+    }
     printf("Enter km driven by client:\n");
     scanf("%u", &kmDriven);
-    rent_finish(found->data, car_head, kmDriven);
+
+    unsigned cost = rent_finish(found->data, car_head, kmDriven);
+    printf("Final Cost: %u\n", cost);
 }
 /**
  * @brief Displays details of a specific rent entry.

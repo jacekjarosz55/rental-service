@@ -55,11 +55,13 @@ Client *fetch_client(Rent *rent, ClientNode *clients)  {
   }
 }
 
-void rent_finish(Rent *rent, CarNode *cars, int km_driven) {
+unsigned rent_finish(Rent *rent, CarNode *cars, int km_driven) {
+  if (rent->finished) return 0;
   rent->finished = true;
   Car *car = fetch_car(rent, cars);
   if (car) {
     car->km_driven+=km_driven;
   }
+  return car->cost * km_driven;
 }
 
