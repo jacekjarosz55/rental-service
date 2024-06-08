@@ -42,25 +42,56 @@ void addCar(CarNode **car_list) {
         printf("\nSomething went wrong... :(\n");
     }
 }
+/**
+ * @brief Prints information about a client.
+ * 
+ * @param client Pointer to the client whose information is to be printed.
+ */
+void print_client(Client *client) {
+    printf("#%u, %s %s, email: %s, phone: %s\n", client->id, client->first_name, client->last_name, client->email, client->phone_number);
+}
+
+/**
+ * @brief Prints information about a car.
+ * 
+ * @param car Pointer to the car whose information is to be printed.
+ */
+void print_car(Car *car) {
+    printf("#%u Car: %s %s - year: %u, kilometers: %u\n",car->id, car->make, car->model, car->year, car->km_driven);
+}
+
+/**
+ * @brief Prints information about a rent.
+ * 
+ * @param rent Pointer to the rent whose information is to be printed.
+ */
+void print_rent(Rent *rent) {
+    printf("#%u Rent: car: #%u, client: #%u, start: %s, end: %s%s\n",rent->id, rent->car_id, rent->client_id, rent->date_start, rent->date_end, rent->finished ? ", finished" : "");
+}
+
 
 /**
  * @brief Adds a new rent entry to the rent list.
  * 
  * @param rent_list Pointer to the head of the rent list.
  */
-void addRent(RentNode **rent_list) {
+void addRent(RentNode **rent_list, CarNode *car_list, ClientNode *client_list) {
     unsigned car_id = 0;
     unsigned client_id = 0;
     char start_date[80];
     char end_date[80];
 
     do {
-        printf("Enter Car Id: \n");
+        printf("Cars: \n");
+        foreach_car(car_list, print_car);
+        printf("\nEnter Car Id: \n");
         scanf("%u", &car_id);
     } while(car_id == 0);
 
     do {
-        printf("Enter Client Id: \n");
+        printf("Clients: \n");
+        foreach_client(client_list, print_client);
+        printf("\nEnter Client Id: \n");
         scanf("%u", &client_id);
     } while(car_id == 0);
 
@@ -157,32 +188,6 @@ void addClient(ClientNode **client_list) {
     }
 }
 
-/**
- * @brief Prints information about a client.
- * 
- * @param client Pointer to the client whose information is to be printed.
- */
-void print_client(Client *client) {
-    printf("#%u, %s %s, email: %s, phone: %s\n", client->id, client->first_name, client->last_name, client->email, client->phone_number);
-}
-
-/**
- * @brief Prints information about a car.
- * 
- * @param car Pointer to the car whose information is to be printed.
- */
-void print_car(Car *car) {
-    printf("#%u Car: %s %s - year: %u, kilometers: %u\n",car->id, car->make, car->model, car->year, car->km_driven);
-}
-
-/**
- * @brief Prints information about a rent.
- * 
- * @param rent Pointer to the rent whose information is to be printed.
- */
-void print_rent(Rent *rent) {
-    printf("#%u Rent: car: #%u, client: #%u, start: %s, end: %s%s\n",rent->id, rent->car_id, rent->client_id, rent->date_start, rent->date_end, rent->finished ? ", finished" : "");
-}
 
 /**
  * @brief Prints detailed information about a rent, including associated car and client details.
@@ -355,7 +360,7 @@ void displayRentsMenu(RentNode **rent_list, ClientNode *client_list, CarNode *ca
         scanf("%d", &choice);
         switch(choice) {
             case 1:
-                addRent(rent_list);
+                addRent(rent_list, car_list, client_list);
                 break;
             case 2:
                 removeRent(rent_list);
