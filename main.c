@@ -296,6 +296,18 @@ void displayClientsMenu(ClientNode **client_list) {
     } while(choice != 0);
 }
 
+void searchCar(CarNode *head) {
+    char searchTerm[255];
+    printf("Provide a search term (max 255 chars):\n");
+    scanf("%254s", searchTerm);
+    CarNode *filtered = car_filtered_list(head, searchTerm, car_search_filter);
+    if(filtered == NULL) {
+        printf("No results.\n");
+        return;
+    }
+    foreach_car(filtered, print_car);
+}
+
 /**
  * @brief Displays the list of cars and related operations menu.
  * 
@@ -304,7 +316,7 @@ void displayClientsMenu(ClientNode **client_list) {
 void displayCarsMenu(CarNode **car_list) {
     int choice;
     do {
-        printf("1.Add\n2.Remove\n3.List\n4.Sort\n0.Back\nEnter your choice:\n");
+        printf("1.Add\n2.Remove\n3.List\n4.Sort\n5.Search\n0.Back\nEnter your choice:\n");
         scanf("%d", &choice);
         switch(choice) {
             case 1:
@@ -319,6 +331,8 @@ void displayCarsMenu(CarNode **car_list) {
             case 4:
                 sortCars(car_list);
                 break;
+            case 5:
+                searchCar(*car_list);
             case 0: 
                 return;
                 break;

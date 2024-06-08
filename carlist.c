@@ -196,5 +196,19 @@ void free_car_list(CarNode *head) {
   free_car(head);
 }
 
+bool car_search_filter(Car* car, char *searchTerm){
+  return(
+    strstr(car->make, searchTerm) != NULL
+    || strstr(car->model, searchTerm) != NULL );
+}
 
-
+CarNode *car_filtered_list(CarNode *head, char* searchTerm, bool(*filter_func)(Car*, char*)) { 
+  CarNode *newList = NULL;
+  while(head != NULL) {
+    if(head->data && filter_func(head->data, searchTerm)) {
+      add_car(&newList, head->data);
+    }
+    head=head->next;
+  }
+  return newList;
+}

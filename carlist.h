@@ -140,5 +140,24 @@ void free_car(CarNode *car);
  */
 void free_car_list(CarNode *head);
 
+/**
+ * @brief Filters the car list based on a search term and a filter function.
+ * 
+ * @param head Pointer to the head of the list.
+ * @param searchTerm The term to search for.
+ * @param filter_func The function used to filter the clients.
+ * @return Pointer to the head of the filtered list.
+ */
+CarNode *car_filtered_list(CarNode *head, char* searchTerm, bool(*filter_func)(Car*, char*));
+
+/**
+ * @brief Default filter function for searching cars.
+ * 
+ * @param car Pointer to the car data.
+ * @param searchTerm The term to search for.
+ * @return True if the car matches the search term, false otherwise.
+ */
+bool car_search_filter(Car* car, char *searchTerm);
+
 #endif // CARLIST_H
 
