@@ -209,7 +209,27 @@ void print_rent_details(Rent *rent, CarNode *car_head, ClientNode *client_head) 
         print_client(client);
     }
 }
-
+/**
+ * @brief Finishes rent.
+ * 
+ * @param head Pointer to the head of the rent list.
+ * @param car_head Pointer to the head of the car list.
+ */
+void finishRent(RentNode *head, CarNode *car_head)
+{
+    unsigned rentId;
+    unsigned kmDriven;
+    printf("ID of Rent to finish:\n");
+    scanf("%u", &rentId);
+    RentNode *found = get_rent_by_id(head, rentId);
+    if(!found) {
+        printf("Can't find this rent ID\n");
+        return;
+    }
+    printf("Enter km driven by client:\n");
+    scanf("%u", &kmDriven);
+    rent_finish(found->data, car_head, kmDriven);
+}
 /**
  * @brief Displays details of a specific rent entry.
  * 
@@ -356,7 +376,7 @@ void displayCarsMenu(CarNode **car_list) {
 void displayRentsMenu(RentNode **rent_list, ClientNode *client_list, CarNode *car_list) {
     int choice;
     do {
-        printf("1.Register\n2.Remove\n3.List\n4.Details\n0.Back\nEnter your choice:\n");
+        printf("1.Register\n2.Remove\n3.List\n4.Details\n5.Finish rent\n0.Back\nEnter your choice:\n");
         scanf("%d", &choice);
         switch(choice) {
             case 1:
@@ -371,6 +391,8 @@ void displayRentsMenu(RentNode **rent_list, ClientNode *client_list, CarNode *ca
             case 4:
                 rentDetails(*rent_list, car_list, client_list);
                 break;
+            case 5:
+                finishRent(*rent_list, car_list);
             case 0: 
                 return;
                 break;

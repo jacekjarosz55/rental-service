@@ -61,8 +61,10 @@ void free_rent_data(Rent *rent);
  * @brief Marks a rent as finished.
  * 
  * @param rent Pointer to the Rent instance to be finished.
+ * @param cars Pointer to the car list.
+ * @param km_driven kilometers driven by client during rent.
  */
-void finish_rent(Rent *rent);
+void rent_finish(Rent *rent, CarNode *cars, int km_driven);
 
 /**
  * @brief Fetches the car associated with a rent.
@@ -72,6 +74,7 @@ void finish_rent(Rent *rent);
  * @return Pointer to the associated Car instance.
  */
 Car *fetch_car(Rent *rent, CarNode *cars);
+
 
 /**
  * @brief Fetches the client associated with a rent.
